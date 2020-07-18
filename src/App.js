@@ -33,7 +33,7 @@ const App = () => {
 export default App;
 
 const Navbar = styled.div`
-   border: solid 6px red;
+   border: solid 6px #B22222;
 
    nav{
       display: flex;
@@ -42,8 +42,9 @@ const Navbar = styled.div`
       margin: 0 2em;
 
       h1{
-         font-size: 2rem;
+         font-size: 2.5rem;
          margin: .5em 0;
+         text-shadow: 3px 3px 3px #909090;
       }
       a{
          padding: 0 .5em;
