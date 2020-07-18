@@ -23,6 +23,12 @@ function Form() {
          name: ""
       }
    )
+   //ERROR STATE
+   const [errorState, setErrorState] = useState(
+      {
+         name: ""
+      }
+   )
 
    //STATE FOR BUTTON AND JSON FORM RETURN
    const [displayForms, setDisplayForms] = useState([]);
@@ -37,6 +43,29 @@ function Form() {
       });
     }, [formState]);
    
+   //VALIDATE=======================
+
+   const validate = (e) => {
+      // CHECK IF IT IS A CHECKBOX INPUT OR NOT
+      let value = ( e.target.type === 'checkbox' 
+                     ? e.target.checked 
+                     : e.target.value );
+      
+      yup.reach( formSchema, e.target.name )
+         .validate(value)
+            .then( (validation) => {
+               setErrorState({
+                  ...errorState,
+                  [e.target.name]: "" 
+               })
+            })
+            .catch( (error) => {
+               setErrorState({
+                  ...errorState,
+                  [e.target.name]: error.errors[0]
+               })
+            })
+   }
 
    //SUBMIT=========================
 
@@ -58,7 +87,8 @@ function Form() {
       // NEEDED IN REACT TO KEEP THE SYNTHETIC EVENT FOR ASYNC EVENTS
       e.persist();
    
-      //NEED TO VALIDATE HERE
+      //CALL VALIDATION
+      validate(e);
 
       // CHECK IF IT IS A CHECKBOX INPUT OR NOT
       let value = ( e.target.type === 'checkbox' 
@@ -75,6 +105,12 @@ function Form() {
    const addNewForm = ( newForm ) => {
       setDisplayForms( [...displayForms, newForm] )
    }
+
+   // YUP INLINE STYLES
+   let yupStyling = {
+      color: 'red',
+      fontSize: '.8rem'
+   }
    
    return(
       <div>
@@ -89,6 +125,9 @@ function Form() {
                   value={formState.name}
                   onChange={inputChange}
                />
+                 { ( errorState.name.length > 0 ) 
+                     ? <p style={yupStyling}>{errorState.name}</p> 
+                     : null }
             </label>
 
             <button 
