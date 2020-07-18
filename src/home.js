@@ -1,4 +1,6 @@
 import React from 'react';
+import pizzaImage from './ivan-torres-MQUqbmszGGM-unsplash.jpg'
+
 
 function Home() {
    return(
