@@ -7,7 +7,15 @@ import axios from 'axios';
 const formSchema = yup.object().shape(
    {
       name: yup.string()
-         .required('Name is Required')
+         .required('Name is Required'),
+      size: yup.string()
+         .required("Size is Required"),
+      sauce: yup.string(),
+      pepperoni: yup.boolean(),
+      olives: yup.boolean(),
+      peppers: yup.boolean(),
+      cabbage: yup.boolean(),
+      extratext: yup.string() 
    }
 )
 
@@ -20,13 +28,24 @@ function Form() {
    //DEFAULT STATE
    const [formState, setFormState] = useState(
       {
-         name: ""
+         name: "",
+         size: "",
+         sauce: "redsauce",
+         pepperoni: false,
+         olives: false,
+         peppers: false,
+         cabbage: false, 
+         extratext: "",
       }
    )
    //ERROR STATE
    const [errorState, setErrorState] = useState(
       {
-         name: ""
+         name: "",
+         pepperoni: "",
+         olives: "",
+         peppers: "",
+         cabbage: ""
       }
    )
 
@@ -113,10 +132,12 @@ function Form() {
    }
    
    return(
+
       <div>
-         <StyledForm onSubmit={submitForm}>
+         <StyledForm id="pizza-form" onSubmit={submitForm}>
             {/* IMAGE HERE */}
 
+            {/* ----------- NAME -------------- */}
             <label htmlFor="name">
                Name
                <input
@@ -130,6 +151,105 @@ function Form() {
                      : null }
             </label>
 
+            {/* ----------- SELECT -------------- */}
+            <label htmlFor="size">
+               Pick a Size
+               <select name="size" onChange={inputChange}>
+                  <option value="ten">10"</option>
+                  <option value="fourteen">14"</option>
+                  <option value="eighteen">18"</option>
+                  <option value="death">Death By A Circle</option>
+               </select>
+            </label>
+
+             {/* ---------RADIO BUTTONS-------------- */}
+             <label>Pick A Sauce</label>
+            <fieldset>
+                <label className="radio-label">
+                   <div>Red Sauce</div>
+                    <input  
+                        type='radio' 
+                        name='sauce' 
+                        onChange={inputChange}  
+                        value='redsauce' />
+                </label>
+                <label className="radio-label">
+                   <div>Green Sauce</div>
+                    <input 
+                        type='radio'   
+                        name='sauce'   
+                        onChange={inputChange}  
+                        value='greensauce' />
+                </label>
+                <label className="radio-label">
+                   <div>Blue Sauce</div>
+                    <input 
+                        type='radio' 
+                        name='sauce' 
+                        onChange={inputChange} 
+                        value='bluesauce' />
+                </label>
+                <label className="radio-label">
+                <div>Mystery Sauce</div>
+                    <input 
+                        type='radio' 
+                        name='sauce' 
+                        onChange={inputChange}  
+                        value='mysterysauce' />
+                </label>
+            </fieldset>
+
+             {/* -----------CHECKBOXES-------------- */}
+             <label>These are the available toppings:</label>
+            <Checkboxes>
+              
+               <div className="checkboxDiv">          
+                  <input
+                     type="checkbox"  id="pepperoni" 
+                     name="pepperoni"
+                     checked={formState.pepperoni}
+                     onChange={inputChange} />               
+                  <label htmlFor="pepperoni">Pepperoni</label>
+               </div>
+
+               <div className="checkboxDiv">          
+                  <input
+                     type="checkbox"  id="olives" 
+                     name="olives"
+                     checked={formState.olives}
+                     onChange={inputChange} />               
+                  <label htmlFor="olives">Olives</label>
+               </div>
+
+               <div className="checkboxDiv">          
+                  <input
+                     type="checkbox"  id="peppers" 
+                     name="peppers"
+                     checked={formState.peppers}
+                     onChange={inputChange} />               
+                  <label htmlFor="peppers">Peppers</label>
+               </div>
+
+               <div className="checkboxDiv">          
+                  <input
+                     type="checkbox"  id="cabbage" 
+                     name="cabbage"
+                     checked={formState.cabbage}
+                     onChange={inputChange} />               
+                  <label htmlFor="cabbage">Cabbage</label>
+               </div>
+            </Checkboxes>
+
+            {/* -----------TEXTAREA-------------- */}
+            <label htmlFor="extratext">
+               Special Instructions :
+               <textarea
+                  id="extratext" name="extratext"
+                  value={formState.extratext}
+                  onChange={inputChange} />
+            </label>
+
+            {/* -----------SUBMIT-------------- */}
             <button 
                data-cy="submitInput" 
                disabled={buttonState}>   
@@ -137,9 +257,11 @@ function Form() {
             </button>
 
          </StyledForm>
+
          <div>
             <pre>{JSON.stringify(displayForms, null, 2)}</pre>
          </div>
+
       </div>
    )
 }
@@ -147,5 +269,9 @@ function Form() {
 export default Form;
 
 const StyledForm = styled.form`
+
+`;
+
+const Checkboxes = styled.div`
 
 `;
